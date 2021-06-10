@@ -12,29 +12,29 @@ run();
 async function run() {
   await connection.connect();
   // //await connection.get().createCollection('users')
-  // await connection.get().dropCollection('users');
-  // userCollection = connection.get().collection('users');
+  await connection.get().dropCollection('users');
+  userCollection = connection.get().collection('users');
 
   // //await connection.get().createCollection('articles')
-  // await connection.get().dropCollection('articles');
-  // articlesCollection = connection.get().collection('articles');
+  await connection.get().dropCollection('articles');
+  articlesCollection = connection.get().collection('articles');
 
   // //await connection.get().createCollection('students');
-  // //await connection.get().dropCollection('students');
+  await connection.get().dropCollection('students');
   studentsCollection = connection.get().collection('students');
 
-  // await example1();
-  // await example2();
-  // await example3();
-  // await example4();
+  await example1();
+  await example2();
+  await example3();
+  await example4();
 
-  // await hwArticles1();
-  // await hwArticles2();
-  // await hwArticles3();
-  // await hwArticles4();
-  // await hwArticles5();
+  await hwArticles1();
+  await hwArticles2();
+  await hwArticles3();
+  await hwArticles4();
+  await hwArticles5();
 
-  //await hwStudents();
+  await hwStudents();
   await hwStudents1();
   await hwStudents7();
 
