@@ -36,6 +36,7 @@ async function run() {
 
   //await hwStudents();
   await hwStudents1();
+  await hwStudents7();
 
   await connection.close();
 }
@@ -167,7 +168,7 @@ async function hwArticles5() {
   }
 }
 
-// Import all data from students.json into student collection
+// 0 - Import all data from students.json into student collection
 
 async function hwStudents() {
   try {
@@ -181,10 +182,10 @@ async function hwStudents() {
   }
 }
 
-// Find all students who have the worst score for homework, sort by descent
+// 1 - Find all students who have the worst score for homework, sort by descent
 
 async function hwStudents1() {
-  const NUMBER_LIMIT=10;
+  const NUMBER_LIMIT = 10;
   try {
     const worstHomework = await studentsCollection
       .aggregate([
@@ -202,12 +203,43 @@ async function hwStudents1() {
   }
 }
 
-// - Find all students who have the best score for quiz and the worst for homework, sort by ascending
-// - Find all students who have best scope for quiz and exam
-// - Calculate the average score for homework for all students
-// - Delete all students that have homework score <= 60
-// - Mark students that have quiz score => 80
-// - Write a query that group students by 3 categories (calculate the average grade for three subjects)
+// 2 - Find all students who have the best score for quiz and the worst for homework, sort by ascending
+// 3 - Find all students who have best scope for quiz and exam
+// 4 - Calculate the average score for homework for all students
+// 5 - Delete all students that have homework score <= 60
+// 6 - Mark students that have quiz score => 80
+
+// 7 - Write a query that group students by 3 categories (calculate the average grade for three subjects)
 //   - a => (between 0 and 40)
 //   - b => (between 40 and 60)
 //   - c => (between 60 and 100)
+async function hwStudents7() {
+  const NUMBER_LIMIT = 10;
+  try {
+    const groupScores = await studentsCollection
+      .aggregate([
+        {
+          $project: {
+            name: 1,
+            scoreAvg: {$avg: ['$scores.score']}
+          }
+        },
+        {
+          $bucket: {
+            groupBy: '$scoreAvg',
+            boundaries: [0, 40, 60, 100],
+            default: 'Out of range',
+            output: {
+              'Number of students': {$sum: 1},
+              'List of students': {$push: '$name'}
+            }
+          }
+        }
+      ])
+      .toArray();
+    console.log(`Group by average:`);
+    console.log(groupScores);
+  } catch (err) {
+    console.error(err);
+  }
+}
